@@ -1,64 +1,60 @@
-<<<<<<< HEAD
-# ISTQB Project – Tests logiciels automatisés
+# ISTQB Project – Automated Software Testing
 
-## Présentation du projet
-Ce projet fait partie d’une pratique orientée ISTQB en tests logiciels.
+## Project Overview
+This project is part of an ISTQB-oriented software testing practice.
 
-Il se concentre sur la conception, l’implémentation et l’exécution de tests automatisés pour une application SaaS de réservation de services en ligne (Trafft).
-L’objectif principal est de valider le comportement fonctionnel, la robustesse et la fiabilité de l’application en utilisant des techniques de tests automatisés.
+It focuses on the design, implementation, and execution of automated tests for a SaaS online service booking application (**Trafft**). 
+The primary goal is to validate the functional behavior, robustness, and reliability of the application using automated testing techniques.
 
-## Objectifs du projet
-* Appliquer les principes ISTQB dans un cas réel
-* Concevoir des cas de test fonctionnels, négatifs et aux limites
-* Automatiser l’exécution des tests avec Selenium WebDriver et PyTest
-* Détecter et documenter les anomalies
-* Améliorer la répétabilité et la couverture des tests
+## Project Objectives
+* Apply ISTQB principles in a real-world scenario.
+* Design functional, negative, and boundary value test cases.
+* Automate test execution using **Selenium WebDriver** and **PyTest**.
+* Detect and document anomalies (bugs).
+* Improve test repeatability and coverage.
 
-## Périmètre des tests
-* Tests côté client (frontend)
-* Validation du workflow de réservation
-* Vérification de la saisie des données et des messages d’erreur
-* Compatibilité multi-navigateurs
-* Tests de charge et de concurrence
+## Test Scope
+* Frontend (Client-side) testing.
+* Booking workflow validation.
+* Data input verification and error message handling.
+* Multi-browser compatibility.
+* Load and concurrency testing.
 
-## Technologies et outils utilisés
-* **Langage :** Python 3.11
-* **Framework de test :** PyTest
-* **Outil d’automatisation :** Selenium WebDriver
-* **Pattern :** Page Object Model (POM)
-* **IDE :** PyCharm / VS Code
-* **Navigateurs :** Google Chrome, Firefox, Microsoft Edge
+## Technologies and Tools Used
+* **Language:** Python 3.11
+* **Testing Framework:** PyTest
+* **Automation Tool:** Selenium WebDriver
+* **Design Pattern:** Page Object Model (POM)
+* **IDE:** PyCharm / VS Code
+* **Browsers:** Google Chrome, Firefox, Microsoft Edge
 
-## Structure du projet
-Le projet est organisé de manière modulaire pour faciliter l’automatisation des tests :
+## Project Structure
+The project is organized modularly to facilitate test automation:
 
-* **tests/ :** cas de tests automatisés
-* **pages/ :** classes POM représentant chaque page de l’application
-* **utils/ :** fonctions et helpers réutilisables
-* **screenshots/ :** captures d’écran des anomalies et des tests
-* **reports/ :** rapports d’exécution des tests
-* **README.md :** documentation du projet
-* **requirements.txt :** dépendances Python
-* **pytest.ini :** configuration PyTest
+* **tests/:** Automated test cases.
+* **pages/:** POM classes representing each application page.
+* **utils/:** Reusable helper functions and utilities.
+* **screenshots/:** Screen captures of anomalies and test results.
+* **reports/:** Test execution reports.
+* **README.md:** Project documentation.
+* **requirements.txt:** Python dependencies.
+* **pytest.ini:** PyTest configuration file.
 
-## Comment exécuter les tests
-1. Installer les dépendances Python
-2. Lancer l’exécution des tests avec PyTest
-3. Générer des rapports détaillés (HTML) pour chaque exécution
+## How to Run the Tests
+1. Install Python dependencies: `pip install -r requirements.txt`
+2. Run tests using PyTest: `pytest`
+3. Generate detailed execution reports (HTML) for each run.
 
-## Gestion des anomalies
-Les bugs détectés sont documentés avec :
-* ID du cas de test
-* Description du problème
-* Résultat attendu vs résultat obtenu
-* Captures d’écran
+## Defect Management
+Detected bugs are documented with:
+* Test Case ID
+* Problem description
+* Expected result vs. Actual result
+* Screenshots
 
-Cette démarche permet de reproduire et de suivre efficacement les anomalies.
+This approach ensures efficient reproduction and tracking of anomalies.
 
-## Auteurs
+## Authors
 * **Amine Abbes**
 * **Med Bechir Torki**
-* **Année universitaire :** 2025–2026
-=======
-# Automation-web-site-test
->>>>>>> fdeed2a46137325ed01305187e80144d77f771d1
+* **Academic Year:** 2025–2026
