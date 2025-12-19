@@ -1,0 +1,402 @@
+\documentclass[12pt,a4paper]{report}
+
+% =========================
+% PACKAGES
+% =========================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+% =========================
+% TITRES
+% =========================
+\titleformat{\chapter}{\bfseries\Huge}{\thechapter}{20pt}{}
+\titleformat{\section}{\bfseries\Large}{\thesection}{15pt}{}
+\titleformat{\subsection}{\bfseries\large}{\thesubsection}{10pt}{}
+
+\begin{document}
+
+% =========================
+% PAGE DE GARDE
+% =========================
+\begin{titlepage}
+    \centering
+    \vspace{3cm}
+    {\Huge \textbf{Projet ISTQB}}\\[1.5cm]
+    {\Large Tests logiciels automatisés d’une application SaaS}\\[2cm]
+
+    \textbf{Auteurs :}\\
+    Amine Abbes\\
+    Med Bechir Torki\\[2cm]
+
+    \textbf{Application testée :}\\
+    Plateforme de réservation en ligne \textbf{Trafft}\\[2cm]
+
+    \vfill
+    Année universitaire 2024–2025
+\end{titlepage}
+
+\tableofcontents
+\listoftables
+\begin{table}[H]
+\centering
+\caption{Classification des types de tests}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Type de test} & \textbf{Description} \\ \hline
+Tests fonctionnels & Validation des fonctionnalités principales \\ \hline
+Tests négatifs & Vérification du rejet des entrées invalides \\ \hline
+Tests BVA & Analyse des valeurs limites \\ \hline
+Tests basés sur les états & Vérification des transitions de réservation \\ \hline
+Tests de performance & Mesure des temps de réponse \\ \hline
+Tests de stress & Comportement sous charge élevée \\ \hline
+Tests cross-browser & Compatibilité multi-navigateurs \\ \hline
+\end{tabular}
+\end{table}
+	\begin{table}[H]
+\centering
+\caption{Environnement matériel et logiciel de test}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Élément} & \textbf{Valeur} \\ \hline
+Système d’exploitation & Windows 10 64 bits \\ \hline
+Navigateur principal & Google Chrome \\ \hline
+Navigateurs secondaires & Firefox, Microsoft Edge \\ \hline
+Langage & Python 3.11 \\ \hline
+Framework de test & PyTest \\ \hline
+Outil d’automatisation & Selenium WebDriver \\ \hline
+IDE & PyCharm \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\centering
+\caption{Résultats globaux des tests}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Indicateur} & \textbf{Valeur} \\ \hline
+Nombre total de cas de test & 22 \\ \hline
+Cas de test réussis & 18 \\ \hline
+Cas de test échoués & 4 \\ \hline
+Taux de réussite & 81.8\% \\ \hline
+Durée totale d’exécution & 50 minutes \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+\listoffigures
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=0.9\textwidth]{screenshots/structure du projet.png}}
+\caption{Architecture générale du projet de test automatisé}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=0.9\textwidth]{screenshots/test work flow.png}}
+\caption{Cycle de vie du test selon l’ISTQB}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=0.85\textwidth]{screenshots/passed TC.png}}
+\caption{Exécution réussie d’un cas de test automatisé}
+\end{figure}
+
+
+
+
+
+\newpage
+
+% =========================
+\chapter{Introduction}
+% =========================
+Le test logiciel constitue une activité essentielle dans le cycle de vie du
+développement des systèmes informatiques modernes. Avec la généralisation des
+applications web et des plateformes SaaS, la qualité logicielle est devenue un
+facteur déterminant de la satisfaction utilisateur et de la pérennité des
+entreprises numériques.
+
+Dans ce contexte, la certification ISTQB fournit un cadre méthodologique
+internationalement reconnu pour structurer les activités de test, depuis
+l’analyse des exigences jusqu’à la gestion des anomalies. Le présent projet
+s’inscrit dans cette démarche et vise à appliquer concrètement les concepts
+théoriques à travers un cas réel.
+
+Ce travail porte sur l’automatisation de tests logiciels pour une application
+web de réservation de services. L’automatisation a été choisie afin de garantir
+la répétabilité des tests, d’améliorer la couverture fonctionnelle et de réduire
+les erreurs humaines.
+
+Ce rapport présente successivement l’application testée, la méthodologie
+adoptée, les techniques de test utilisées, les résultats obtenus ainsi que les
+anomalies détectées, avant de conclure sur les limites et les perspectives
+d’amélioration.
+
+% =========================
+\chapter{Présentation de l’application Trafft}
+% =========================
+Trafft est une plateforme SaaS dédiée à la réservation de services en ligne.
+Elle vise à digitaliser l’ensemble du parcours client, depuis la découverte
+des services jusqu’à la confirmation et la gestion des rendez-vous.
+
+\section{Fonctionnalités principales}
+L’application permet aux utilisateurs de consulter un catalogue de services,
+de sélectionner un prestataire (barber), de choisir un lieu (location) et de
+réserver un créneau horaire via un calendrier interactif. Les utilisateurs
+peuvent effectuer ces actions en tant qu’invités ou via un compte authentifié.
+
+\section{Parcours utilisateur}
+Le parcours utilisateur repose sur une succession d’étapes critiques :
+sélection du service, choix du professionnel, sélection de la date et de
+l’heure, saisie des informations personnelles et confirmation finale. Toute
+erreur à l’une de ces étapes peut entraîner une perte de réservation ou une
+insatisfaction client.
+
+\section{Intérêt pour le test logiciel}
+Du point de vue de l’ingénieur QA, Trafft présente plusieurs défis :
+\begin{itemize}
+    \item Gestion de formulaires complexes,
+    \item Transitions d’états sensibles (annulation, reprogrammation),
+    \item Problèmes de concurrence lors de réservations simultanées,
+    \item Validation des données utilisateur.
+\end{itemize}
+
+% =========================
+\chapter{Objectifs et périmètre des tests}
+% =========================
+L’objectif principal de ce projet est de vérifier la conformité fonctionnelle
+et la robustesse de l’application Trafft face à différents scénarios
+d’utilisation.
+
+\section{Objectifs}
+\begin{itemize}
+    \item Détecter les défauts fonctionnels critiques,
+    \item Valider les règles métier liées aux réservations,
+    \item Évaluer le comportement de l’application sous charge,
+    \item Vérifier la compatibilité multi-navigateurs.
+\end{itemize}
+
+\section{Périmètre}
+Les tests couvrent les fonctionnalités accessibles côté client. Les aspects
+internes tels que les API backend ou la base de données ne sont pas directement
+testés dans ce projet.
+
+% =========================
+\chapter{Méthodologie de test ISTQB}
+% =========================
+La méthodologie adoptée suit le cycle de vie des tests défini par l’ISTQB.
+
+\section{Analyse des exigences}
+Les exigences ont été déduites à partir du comportement observable de
+l’application et des règles métier implicites.
+
+\section{Conception des tests}
+Les cas de test ont été conçus en utilisant différentes techniques ISTQB afin
+d’assurer une couverture maximale.
+
+\section{Implémentation et exécution}
+Les tests ont été automatisés à l’aide de Selenium WebDriver et du framework
+PyTest, en appliquant le modèle Page Object Model pour améliorer la
+maintenabilité.
+
+% =========================
+\chapter{Techniques de test utilisées}
+% =========================
+\section{Tests fonctionnels}
+Ils permettent de vérifier que les fonctionnalités principales répondent aux
+exigences.
+
+\section{Tests négatifs}
+Ces tests visent à s’assurer que l’application réagit correctement aux entrées
+invalides.
+
+\section{Analyse des valeurs limites}
+La technique BVA a été utilisée pour tester les champs sensibles tels que le
+nom, le téléphone et l’email.
+
+\section{Tests basés sur les états}
+Les transitions entre les différents états des réservations ont été vérifiées
+afin d’éviter les incohérences.
+
+\section{Tests de performance et de stress}
+Ces tests évaluent la capacité du système à gérer plusieurs requêtes
+simultanées et à maintenir des temps de réponse acceptables.
+
+% =========================
+\chapter{Architecture du projet de test}
+% =========================
+Le projet est structuré selon une architecture modulaire respectant les bonnes
+pratiques de l’automatisation des tests.
+
+\section{Page Object Model}
+Chaque page de l’application est représentée par une classe dédiée, ce qui
+permet de centraliser les localisateurs et les actions.
+
+\section{Organisation des suites de tests}
+Les tests sont regroupés par catégorie : fonctionnels, performance,
+cross-browser et stress.
+
+% =========================
+\chapter{Présentation détaillée des cas de test}
+% =========================
+Les cas de test suivants ont été conçus et exécutés :
+
+\begin{longtable}{|c|p{3cm}|p{7cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{Catégorie} & \textbf{Scénario} & \textbf{Statut attendu} \\ \hline
+TC01 & Fonctionnel & Création d’un compte client & Succès \\ \hline
+TC02 & Fonctionnel & Connexion valide & Succès \\ \hline
+TC03 & Fonctionnel & Mot de passe erroné & Échec \\ \hline
+TC04 & Fonctionnel & Email en majuscule & Échec \\ \hline
+TC05 & Fonctionnel & Booking utilisateur connecté & Succès \\ \hline
+TC06 & Fonctionnel & Booking invité & Succès \\ \hline
+TC07 & BVA & Nom 255 caractères & Succès \\ \hline
+TC08 & BVA & Nom 256 caractères & Échec \\ \hline
+TC09 & BVA & Téléphone invalide & Échec \\ \hline
+TC10 & BVA & Téléphone alphabétique & Échec \\ \hline
+TC11 & BVA & Email invalide & Échec \\ \hline
+TC12 & États & Annulation multiple & Succès \\ \hline
+TC13 & États & Reprogrammation & Succès \\ \hline
+TC14 & États & Déconnexion en cours & Succès \\ \hline
+TC15 & Données & Vérification du prix & Succès \\ \hline
+TC16 & Cross-browser & Chrome & Succès \\ \hline
+TC17 & Cross-browser & Firefox & Succès \\ \hline
+TC18 & Cross-browser & Edge & Succès \\ \hline
+TC19 & Compatibilité & Mobile & Succès \\ \hline
+TC20 & Compatibilité & Tablette & Succès \\ \hline
+TC21 & Stress & Réservations simultanées & Échec \\ \hline
+TC22 & Performance & Temps de chargement & Succès \\ \hline
+\end{longtable}
+
+% =========================
+\chapter{Résultats d’exécution et analyse}
+% =========================
+L’exécution des tests a permis d’identifier plusieurs anomalies critiques,
+notamment liées à la validation des données et à la gestion de la concurrence.
+
+Un taux global de réussite élevé a été observé, mais les échecs détectés
+présentent un impact métier important.
+
+% =========================
+\chapter{Gestion des anomalies}
+% =========================
+\\section{Bug TC04 – Email en majuscule}
+\textbf{Description :} Le système accepte des emails en majuscules alors qu’un
+rejet était attendu.
+
+\textbf{Impact :} Risque de duplication de comptes et incohérence des données
+d’authentification.
+
+\begin{figure}[H]
+\centering
+\fbox{
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC04_1.png}
+\caption*{Tentative de connexion avec email en majuscule}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC04_2.png}
+\caption*{Accès accordé malgré la non-conformité}
+\end{minipage}
+}
+\caption{Bug TC04 – Acceptation incorrecte des emails en majuscules}
+\end{figure}
+
+
+\section{Bug TC10 – Téléphone invalide}
+\textbf{Description :} Le champ téléphone accepte des chaînes alphabétiques.
+
+\textbf{Impact :} Données de contact non fiables et perte de communication avec
+le client.
+
+\begin{figure}[H]
+\centering
+\fbox{
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC10_1.png}
+\caption*{Saisie d’un numéro alphabétique}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC10_2.png}
+\caption*{Validation acceptée à tort}
+\end{minipage}
+}
+\caption{Bug TC10 – Validation incorrecte du numéro de téléphone}
+\end{figure}
+
+\section{Bug TC12 – Confusion d’annulation}
+\textbf{Description :} Le système confond les identifiants lors de multiples
+annulations d’un même rendez-vous.
+
+\textbf{Impact :} Incohérence des états de réservation et erreurs métier.
+
+\begin{figure}[H]
+\centering
+\fbox{
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC12_1.png}
+\caption*{Annulation du premier rendez-vous}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{screenshots/TC12_2.png}
+\caption*{Message d’erreur incorrect lors de la seconde annulation}
+\end{minipage}
+}
+\caption{Bug TC12 – Confusion des états de réservation}
+\end{figure}
+
+\section{Bug TC21 – Concurrence}
+\textbf{Description :} Le système accepte plusieurs réservations simultanées
+pour le même créneau horaire.
+
+\textbf{Impact :} Double booking critique impactant directement l’activité
+métier.
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=0.9\textwidth]{screenshots/TC21.png}}
+\caption{Bug TC21 – Acceptation incorrecte de réservations concurrentes}
+\end{figure}
+
+% =========================
+\chapter{Limites et perspectives}
+% =========================
+Les tests se limitent à la couche frontend. Des améliorations futures pourraient
+inclure des tests API, une intégration CI/CD et l’utilisation de l’IA générative
+pour la conception automatique des tests.
+
+% =========================
+\chapter{Conclusion}
+% =========================
+Ce projet a permis d’appliquer concrètement les concepts ISTQB à un cas réel.
+L’automatisation a démontré son efficacité dans la détection d’anomalies
+critiques et constitue un levier essentiel pour la qualité des applications
+SaaS modernes.
+
+\end{document}
