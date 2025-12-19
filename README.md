@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ISTQB Project – Tests logiciels automatisés
 
 ## Présentation du projet
@@ -58,3 +59,6 @@ Cette démarche permet de reproduire et de suivre efficacement les anomalies.
 * **Amine Abbes**
 * **Med Bechir Torki**
 * **Année universitaire :** 2025–2026
+=======
+# Automation-web-site-test
+>>>>>>> fdeed2a46137325ed01305187e80144d77f771d1
